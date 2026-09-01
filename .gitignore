@@ -1,0 +1,139 @@
+# ============================================================
+# DermaVision AI — .gitignore
+# Deployment-only repository.
+# Local research datasets (~8.9 GB) and training artifacts
+# are excluded to keep the repository minimal and safe.
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Python bytecode / cache
+# ------------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+.Python
+
+
+# ------------------------------------------------------------
+# Jupyter notebooks and checkpoints
+# (training notebook excluded from deployment repository)
+# ------------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb
+
+
+# ------------------------------------------------------------
+# HAM10000 dataset folders
+# (~8.9 GB total — must never be committed)
+# ------------------------------------------------------------
+HAM10000_images/
+HAM10000_YOLO/
+HAM10000_YOLO_OVERSAMPLED/
+
+
+# ------------------------------------------------------------
+# Dataset metadata / split files
+# (large CSVs not required for inference)
+# ------------------------------------------------------------
+HAM10000_metadata.csv
+HAM10000_lesion_aware_split.csv
+
+
+# ------------------------------------------------------------
+# Training outputs / research artifacts
+# ------------------------------------------------------------
+runs/
+research_outputs/
+publication_figures/
+publication_tables/
+
+
+# ------------------------------------------------------------
+# Base / pre-training weights
+# (only the final trained model is committed)
+# ------------------------------------------------------------
+yolo26m-cls.pt
+weights/
+final_model/*
+!final_model/YOLO26M_HAM10000_FINAL_best.pt
+
+
+# ------------------------------------------------------------
+# Python virtual environments
+# ------------------------------------------------------------
+venv/
+.venv/
+env/
+ENV/
+.env
+
+
+# ------------------------------------------------------------
+# IDE / editor directories
+# ------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# ------------------------------------------------------------
+# Python tooling caches
+# ------------------------------------------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+
+# ------------------------------------------------------------
+# Streamlit local secrets
+# (config.toml is safe to commit; secrets.toml is not)
+# ------------------------------------------------------------
+.streamlit/secrets.toml
+
+
+# ------------------------------------------------------------
+# Logs and temporary files
+# ------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+
+
+# ------------------------------------------------------------
+# OS-generated files
+# ------------------------------------------------------------
+.DS_Store
+.DS_Store?
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+
+# ------------------------------------------------------------
+# Archives / backup files
+# ------------------------------------------------------------
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar.bz2
+
+
+# ============================================================
+# NOT IGNORED — explicitly kept for deployment:
+#   app.py
+#   requirements.txt
+#   README.md
+#   .gitignore
+#   .streamlit/config.toml
+#   final_model/
+#   final_model/YOLO26M_HAM10000_FINAL_best.pt
+# ============================================================

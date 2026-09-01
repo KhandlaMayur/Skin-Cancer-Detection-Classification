@@ -1,0 +1,13 @@
+# DermaVision AI — Streamlit Community Cloud requirements
+# Minimal set derived from app.py imports only.
+# opencv-python-headless is required on Linux (Streamlit Cloud) to
+# avoid the libxcb/display errors that occur with opencv-python.
+
+streamlit>=1.32.0
+ultralytics>=8.3.0
+pillow>=10.0.0
+altair>=5.0.0
+pandas>=2.0.0
+numpy>=1.24.0
+torch>=2.1.0
+opencv-python-headless>=4.8.0
