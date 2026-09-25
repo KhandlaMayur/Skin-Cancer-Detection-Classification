@@ -135,6 +135,104 @@ The deployed application provides:
 
 ---
 
+## Project Workflow & Architecture
+
+The system follows a research-to-deployment pipeline designed for dermoscopic skin lesion classification:
+
+1. Data preparation
+   - HAM10000 images and metadata are loaded from the dataset folders.
+   - A lesion-aware split is applied so multiple images from the same lesion stay in the same partition.
+   - Class imbalance is handled with a moderate oversampling strategy during training.
+
+2. Model training
+   - The project trains a YOLO26M-CLS classifier for 7 lesion categories.
+   - Baseline and oversampled model variants are trained and compared.
+   - Training runs are logged under the `runs/` directory with metrics and weights.
+
+3. Evaluation and analysis
+   - Model performance is assessed on a held-out test set using accuracy, balanced accuracy, macro F1, macro ROC-AUC, and per-class recall.
+   - Misclassification patterns and error analysis are stored in `research_outputs/` and publication tables.
+
+4. Deployment
+   - The trained model is exported to `final_model/YOLO26M_HAM10000_FINAL_best.pt`.
+   - A Streamlit app loads the model and classifies uploaded dermoscopic images in real time.
+
+### High-level architecture
+
+- Frontend: Streamlit web interface (`app.py`)
+- Model: YOLO26M-CLS image classifier
+- Data layer: HAM10000 metadata + lesion-aware train/validation/test split
+- Training outputs: model checkpoints, metrics, confusion matrices, plots
+- Deployment layer: local and cloud-ready Streamlit inference app
+
+---
+
+## Key Features
+
+- Multi-class skin lesion classification across 7 HAM10000 classes
+- YOLO26M-CLS based model optimized for dermoscopic image analysis
+- Lesion-aware train/validation/test split to reduce data leakage
+- Oversampling support to improve minority-class recognition
+- Real-time image upload and prediction through Streamlit
+- Probability distribution and Top-3 ranked predictions for each image
+- Research-ready outputs including confusion matrices, metrics, and comparison reports
+- Model weights and evaluation artifacts included for reproducibility
+- Safe research disclaimer and non-clinical usage guidance
+
+---
+
+## How to Run the Project
+
+### 1) Clone the repository
+
+```bash
+git clone https://github.com/KhandlaMayur/Skin-Cancer-Detection-Classification
+cd Skin-Cancer-Detection-Classification
+```
+
+### 2) Create and activate a virtual environment
+
+```bash
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# Linux/macOS
+source venv/bin/activate
+```
+
+### 3) Install dependencies
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+### 4) Start the app
+
+```bash
+streamlit run app.py
+```
+
+This launches the web app locally at:
+
+```text
+http://localhost:8501
+```
+
+### 5) Use the app
+
+- Upload a skin lesion image in JPG, JPEG, or PNG format
+- View the predicted class, confidence score, and probability chart
+- Inspect the Top-3 predictions and full class distribution
+
+### Notes
+
+- The trained model is already present in `final_model/YOLO26M_HAM10000_FINAL_best.pt`.
+- If CUDA is available, inference will use GPU automatically; otherwise it falls back to CPU.
+- This is a research prototype and should not be used as a medical diagnostic tool.
+
+---
+
 ## Project Structure
 
 ```
@@ -142,9 +240,24 @@ DermaVision-AI/
 ├── app.py                                  # Streamlit application
 ├── requirements.txt                        # Python dependencies
 ├── .gitignore                              # Repository exclusion rules
-├── README.md                               # This document
-└── final_model/
-    └── YOLO26M_HAM10000_FINAL_best.pt     # Trained model weights (19.93 MB)
+├── README.md                               # Project documentation
+├── HAM10000_images/                        # Raw HAM10000 image folder
+├── HAM10000_YOLO/                          # Prepared YOLO-style dataset
+├── HAM10000_YOLO_OVERSAMPLED/              # Oversampled training dataset
+├── final_model/                            # Final trained weights and summaries
+│   ├── YOLO26M_HAM10000_FINAL_best.pt
+│   ├── final_model_comparison.csv
+│   ├── final_project_summary.txt
+│   └── final_research_summary.json
+├── runs/                                   # Training logs and checkpoints
+├── research_outputs/                       # Evaluation and error-analysis artifacts
+├── publication_figures/                    # Plots for reports
+├── publication_tables/                     # Publication-ready metrics tables
+├── weights/                                # Supporting model weights
+├── canser_classification.ipynb             # Notebook for experimentation
+├── HAM10000_lesion_aware_split.csv         # Lesion-aware split metadata
+├── HAM10000_metadata.csv                   # HAM10000 dataset metadata
+└── yolo26m-cls.pt                          # YOLO classification pretrained weights
 ```
 
 ---
@@ -152,7 +265,7 @@ DermaVision-AI/
 ## Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/KhandlaMayur/Skin-Cancer-Detection-Classification
 cd DermaVision-AI
 python -m pip install -r requirements.txt
 ```
